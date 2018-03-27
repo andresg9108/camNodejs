@@ -1,0 +1,10 @@
+{
+  "name": "cam_nodejs",
+  "version": "1.0.0",
+  "description": "Captura de camara web, con node.js.",
+  "dependencies": {
+    "socket.io": "*",
+    "express": "*",
+    "log": "*"
+  }
+}
