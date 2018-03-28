@@ -10,6 +10,36 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <script>
+    $(function(){
+      // Cargando objetos.
+      var camvas = document.getElementById('preview');
+      var context = camvas.getContext('2d');
+      var video = document.getElementById('video');
+      var socket = io();
+
+      // Modificando algunos atributos.
+      camvas.width = 800;
+      camvas.height = 600;
+      context.width = camvas.width;
+      context.height = camvas.height;
+
+      // Cargando el navegador.
+      navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
+      if(navigator.getUserMedia){
+        navigator.getUserMedia({
+          video: true,
+          audio: false
+        }, loadCam, loadFail);
+      }
+
+      // Transmitiendo video a canvas.
+      setInterval(function(){
+        viewVideo(video, context, camvas, socket);
+      }, 70);
+    });
+
+
+    
     // Carga de loggers.
     function logger(msj){
       $("#logger").html("<h3>" + msj + "</h3>");
@@ -32,40 +62,12 @@
       ctxt.drawImage(vid, 0, 0, ctxt.width, ctxt.height);
       sckt.emit('stream', cvas.toDataURL('image/webp'));
     }
-
-  	$(function(){
-      // Cargando objetos.
-  		var camvas = document.getElementById('preview');
-  		var context = camvas.getContext('2d');
-      var video = document.getElementById('video');
-      var socket = io();
-
-      // Modificando algunos atributos.
-  		camvas.width = 800;
-  		camvas.height = 600;
-  		context.width = camvas.width;
-  		context.height = camvas.height;
-
-      // Cargando el navegador.
-  		navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
-  		if(navigator.getUserMedia){
-  			navigator.getUserMedia({
-  				video: true,
-  				audio: false
-  			}, loadCam, loadFail);
-  		}
-
-      // Transmitiendo video a canvas.
-      setInterval(function(){
-        viewVideo(video, context, camvas, socket);
-      }, 70);
-  	});
   </script>
 </head>
 <body>
 	<video src="" id="video" style="width: 680px; height: 320px;" autoplay="true"></video>
 	<canvas id="preview" style="display: none;"></canvas>
   <br /><br />
-	<div id="logger" style="width: 680px; height: 40px; color: white; background: black;"></div>
+  <div id="logger" style="width: 680px; height: 40px; color: white; background: black;"></div>
 </body>
 </html>
