@@ -7,11 +7,55 @@
   src="http://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+  	$(function(){
+  		var camvas = document.getElementById('preview');
+  		var context = camvas.getContext('2d');
+
+  		camvas.width = 800;
+  		camvas.height = 600;
+
+  		context.width = camvas.width;
+  		context.height = camvas.height;
+
+  		var video = document.getElementById('video');
+
+  		var socket = io();
+
+  		navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
+
+  		if(navigator.getUserMedia){
+  			navigator.getUserMedia({
+  				video: true,
+  				audio: true
+  			}, loadCam, loadFail);
+  		}
+  	});
+
+
+  	function logger(msj){
+  		$("#logger").html("<h3>" + msj + "</h3>");
+  		console.log(msj);
+  	}
+
+  	function loadCam(stream){
+  		logger('Camara cargada con exito.');
+  	}
+
+  	function loadFail(){
+  		logger('Camara no conectada.');
+  	}
+
+  	function viewVideo(vid, ctxt){
+  		ctxt.drawImage(vid, 0, 0, ctxt.width, ctxt.height);
+  	}
+  </script>
 </head>
 <body>
 	<video src="" id="video" style="width: 680px; height: 320px;" autoplay="true"></video>
-	<camvas id="preview"></camvas>
-
-	<script></script>
+	<canvas id="preview"></canvas>
+	<div id="logger" style="width: 680px; height: 40px; color: white; background: black;"></div>
 </body>
 </html>

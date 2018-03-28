@@ -20,7 +20,7 @@ io.on('connection', function(socket){
 	});
 });
 
-app.listen(port, function(){
+http.listen(port, function(){
 	log.info("Puerto: " + port);
 	console.log("Puerto: " + port);
 });

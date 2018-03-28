@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Captura de camara web, con node.js.",
   "dependencies": {
-    "socket.io": "*",
-    "express": "*",
-    "log": "*"
+    "express": "^4.16.3",
+    "log": "^1.4.0",
+    "socket.io": "^2.0.4"
   }
 }
