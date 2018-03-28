@@ -10,53 +10,61 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <script>
+    // Carga de loggers.
+    function logger(msj){
+      $("#logger").html("<h3>" + msj + "</h3>");
+      console.log(msj);
+    }
+
+    // En caso de que no ocurrio algun error con la transmisión.
+    function loadCam(stream){
+      video.src = window.URL.createObjectURL(stream);
+      logger('Camara cargada con exito.');
+    }
+
+    // En caso de error con la transmisión.
+    function loadFail(){
+      logger('Camara no conectada.');
+    }
+
+    // Transmitiendo video a canvas.
+    function viewVideo(vid, ctxt, cvas, sckt){
+      ctxt.drawImage(vid, 0, 0, ctxt.width, ctxt.height);
+      sckt.emit('stream', cvas.toDataURL('image/webp'));
+    }
+
   	$(function(){
+      // Cargando objetos.
   		var camvas = document.getElementById('preview');
   		var context = camvas.getContext('2d');
+      var video = document.getElementById('video');
+      var socket = io();
 
+      // Modificando algunos atributos.
   		camvas.width = 800;
   		camvas.height = 600;
-
   		context.width = camvas.width;
   		context.height = camvas.height;
 
-  		var video = document.getElementById('video');
-
-  		var socket = io();
-
+      // Cargando el navegador.
   		navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
-
   		if(navigator.getUserMedia){
   			navigator.getUserMedia({
   				video: true,
-  				audio: true
+  				audio: false
   			}, loadCam, loadFail);
   		}
+
+      // Transmitiendo video a canvas.
+      setInterval(function(){
+        viewVideo(video, context, camvas, socket);
+      }, 70);
   	});
-
-
-  	function logger(msj){
-  		$("#logger").html("<h3>" + msj + "</h3>");
-  		console.log(msj);
-  	}
-
-  	function loadCam(stream){
-      video.src = window.URL.createObjectURL(stream);
-  		logger('Camara cargada con exito.');
-  	}
-
-  	function loadFail(){
-  		logger('Camara no conectada.');
-  	}
-
-  	function viewVideo(vid, ctxt){
-  		ctxt.drawImage(vid, 0, 0, ctxt.width, ctxt.height);
-  	}
   </script>
 </head>
 <body>
 	<video src="" id="video" style="width: 680px; height: 320px;" autoplay="true"></video>
-	<canvas id="preview"></canvas>
+	<canvas id="preview" style="display: none;"></canvas>
   <br /><br />
 	<div id="logger" style="width: 680px; height: 40px; color: white; background: black;"></div>
 </body>
