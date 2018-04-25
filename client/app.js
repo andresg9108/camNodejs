@@ -1,32 +1,16 @@
-/*var oExpress = require('express');
+var oExpress = require('express');
 var oApp = oExpress();
 var oServer = require('http').Server(oApp);
-var oIo = require('socket.io')(oServer);*/
+var oIo = require('socket.io')(oServer);
 
+var oLog = require('log'),
+	oLog = new oLog('debug');
 
-var express = require('express');
-var app = new express();
-var http = require("http").Server(app);
-var io = require('socket.io')(http);
+var iPort = process.env.PORT || 3000;
 
-var log = require('log'),
-	log = new log('debug');
+oApp.use(oExpress.static(__dirname + "/public"));
 
-var port = process.env.PORT || 3000;
-
-app.use(express.static(__dirname + "/public"));
-
-app.get('/', function(req, res){
-	res.redirect('index.html');
-});
-
-io.on('connection', function(socket){
-	socket.on('stream', function(image){
-		socket.broadcast.emit('stream', image);
-	});
-});
-
-http.listen(port, function(){
-	log.info("Puerto: " + port);
-	console.log("Puerto: " + port);
+oServer.listen(iPort, function(){
+	oLog.info("Puerto: " + iPort);
+	console.log("Puerto: " + iPort);
 });
