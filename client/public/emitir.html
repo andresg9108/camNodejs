@@ -15,7 +15,7 @@
       var camvas = document.getElementById('preview');
       var context = camvas.getContext('2d');
       var video = document.getElementById('video');
-      //var socket = io();
+      
       var socket = io.connect('http://localhost:3001', {'forceNew': true});
 
       // Modificando algunos atributos.

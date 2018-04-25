@@ -13,7 +13,8 @@
   	$(function(){
   		// Cargando objetos.
   		var img = document.getElementById('play');
-      	var socket = io();
+      
+        var socket = io.connect('http://localhost:3001', {'forceNew': true});
 
       	socket.on('stream', function(image){
       		img.src = image;
