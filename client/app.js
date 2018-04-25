@@ -1,3 +1,9 @@
+/*var oExpress = require('express');
+var oApp = oExpress();
+var oServer = require('http').Server(oApp);
+var oIo = require('socket.io')(oServer);*/
+
+
 var express = require('express');
 var app = new express();
 var http = require("http").Server(app);
