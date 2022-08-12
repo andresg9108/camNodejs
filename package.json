@@ -1,0 +1,27 @@
+{
+  "name": "camnodejs",
+  "version": "0.1.0",
+  "description": "Practical example of camera management in NodeJs",
+  "scripts": {
+    "server": "nodemon server.js",
+    "client": "nodemon client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andresg9108/camNodejs.git"
+  },
+  "author": "Andrés González",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andresg9108/camNodejs/issues"
+  },
+  "homepage": "https://github.com/andresg9108/camNodejs#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jquery": "^3.6.0",
+    "log": "^6.3.1",
+    "socket.io": "^4.5.1",
+    "socket.io-client": "^4.5.1"
+  }
+}
