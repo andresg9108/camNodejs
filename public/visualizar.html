@@ -3,35 +3,36 @@
 <head>
 	<meta charset="utf-8">
 	<title>Visualizar</title>
-	<script
-  src="http://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+  <script src="/jquery/jquery.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 
-  <script>
-  	$(function(){
-  		// Cargando objetos.
-  		var img = document.getElementById('play');
-      	var socket = io();
+<script>
 
-      	socket.on('stream', function(image){
-      		img.src = image;
-      		logger('OK - '+image);
-      	});
+$(() => {
+	// Cargando objetos.
+	var img = document.getElementById('play');
+  
+    var socket = io.connect('http://localhost:3001', {'forceNew': true});
+
+  	socket.on('stream', function(image){
+  		img.src = image;
+  		logger('OK - '+image);
   	});
+});
 
 
-  	// Carga de loggers.
-    function logger(msj){
-      $("#logger").html("<h3>" + msj + "</h3>");
-      console.log(msj);
-    }
-  </script>
+// Carga de loggers.
+function logger(msj){
+  $("#logger").html("<h3>" + msj + "</h3>");
+  console.log(msj);
+}
+
+</script>
+
 </head>
 <body>
 	<img id="play" />
-	<br /><br />
-	<div id="logger" style="width: 680px; height: auto; color: white; background: black;"></div>
+	<br />
+  <div id="logger" style="width: 400px; height: 40px; color: white; background: black;"></div>
 </body>
 </html>
