@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="utf-8">
+  	<title>Emitir Video</title>
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+$(() => {
+  // Cargando objetos.
+  var camvas = document.getElementById('preview');
+  var context = camvas.getContext('2d');
+  var video = document.getElementById('video');
+  
+  var socket = io.connect('http://localhost:3001', {'forceNew': true});
+
+  // Modificando algunos atributos.
+  camvas.width = 400;
+  camvas.height = 400;
+  context.width = camvas.width;
+  context.height = camvas.height;
+
+  // Cargando el navegador.
+  navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
+  if(navigator.getUserMedia){
+    navigator.getUserMedia({
+      video: true,
+      audio: false
+    }, loadCam, loadFail);
+  }
+
+  // Transmitiendo video a canvas.
+  setInterval(() => {
+    viewVideo(video, context, camvas, socket);
+  }, 70);
+});
+
+
+
+// Carga de loggers.
+function logger(msj){
+  $("#logger").html("<h3>" + msj + "</h3>");
+  console.log(msj);
+}
+
+// En caso de que no ocurrio algun error con la transmisión.
+function loadCam(stream){
+  // video.src = window.URL.createObjectURL(stream);
+  video.srcObject = stream;
+  logger('Camara cargada con exito.');
+}
+
+// En caso de error con la transmisión.
+function loadFail(){
+  logger('Camara no conectada.');
+}
+
+// Transmitiendo video a canvas.
+function viewVideo(vid, ctxt, cvas, sckt){
+  ctxt.drawImage(vid, 0, 0, ctxt.width, ctxt.height);
+  sckt.emit('stream', cvas.toDataURL('image/webp'));
+}
+
+</script>
+
+  </head>
+  <body>
+    <h2>Video</h2>
+  	<video src="" id="video" style="width: 400px; height: 400px;" autoplay="true"></video>
+  	<h2>Canvas</h2>
+    <canvas id="preview"></canvas>
+    <br />
+    <div id="logger" style="width: 400px; height: 40px; color: white; background: black;"></div>
+  </body>
+</html>
